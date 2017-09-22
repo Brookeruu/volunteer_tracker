@@ -31,7 +31,17 @@ class Project
   end
 
   def save
-    @id = DB.exec("INSERT INTO projects (title,id) VALUES ('#{@title}','#{@id}') RETURNING id;").first().fetch("id").to_i()
+    @id = DB.exec("INSERT INTO projects (title) VALUES ('#{@title}') RETURNING id;").first().fetch("id").to_i()
+  end
+
+  def self.volunteers
+    volunteers = []
+    Project.all().each do |volunteer|
+      if volunteer.project_id().==(id)
+        volunteers.push(volunteer)
+      end
+    end
+    return volunteers
   end
 
 end
