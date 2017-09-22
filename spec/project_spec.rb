@@ -17,6 +17,7 @@ describe Project do
     it 'returns the id of the project after saving project' do
       project = Project.new({:title => 'Teaching Kids to Code', :id => nil})
       project.save
+      binding.pry
       expect(project.id).to be_an_instance_of Integer
     end
   end
