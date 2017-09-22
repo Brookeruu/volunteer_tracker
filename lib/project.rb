@@ -34,14 +34,26 @@ class Project
     @id = DB.exec("INSERT INTO projects (title) VALUES ('#{@title}') RETURNING id;").first().fetch("id").to_i()
   end
 
-  def self.volunteers
+  def volunteers()
+    which_project = self.id
     volunteers = []
-    Project.all().each do |volunteer|
-      if volunteer.project_id().==(id)
+    Volunteer.all().each do |volunteer|
+      if volunteer.project_id.==(which_project)
         volunteers.push(volunteer)
       end
     end
     return volunteers
+  end
+
+  def update(attributes)
+    @title= attributes.fetch(:title)
+    @id= self.id()
+    DB.exec("UPDATE projects SET (title) = ('#{@title}') WHERE id = #{@id};")
+  end
+
+  def delete
+    DB.exec("DELETE FROM projects WHERE id = #{self.id()};")
+    DB.exec("DELETE FROM volunteers WHERE project_id = #{self.id()};")
   end
 
 end
