@@ -41,6 +41,19 @@ post('/edit_project/:id')do
   erb(:edit_project)
 end
 
+get('/edit_project/:id/delete')do
+  @project = Project.find(params.fetch("id").to_i)
+  erb(:delete)
+end
+
+delete('/edit_project/:id/delete')do
+  project = Project.find(params.fetch("id").to_i)
+  project.delete
+  binding.pry
+  @projects = Project.all()
+  erb(:delete)
+end
+
 # get('/city_list') do
 #   @cities = City.all()
 #   erb(:city_list)
