@@ -1,0 +1,17 @@
+<h1><%= @project.title %></h1>
+
+<form action="/edit_project/<%= @project.id %>" method= "post">
+  <div class="form-group">
+    <label class="form-label" for="title">Change title to:</label>
+    <input class="form-control" name="title" id="title" type="text">
+  </div>
+
+  <button type="submit" class="btn btn-success">Update Project</button>
+</form>
+
+<button type="button" class="btn btn-dark">Delete</button>
+
+<br>
+  <a href="/city_list"><button type="button" class="btn btn-dark">View all volunteers</button></a>
+
+  <a href="/"><button type="button" class="btn btn-light">Home</button></a>

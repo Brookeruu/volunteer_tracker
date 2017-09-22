@@ -34,7 +34,7 @@ class Project
     @id = DB.exec("INSERT INTO projects (title) VALUES ('#{@title}') RETURNING id;").first().fetch("id").to_i()
   end
 
-  def volunteers()
+  def volunteers
     which_project = self.id
     volunteers = []
     Volunteer.all().each do |volunteer|
