@@ -37,4 +37,19 @@ class Volunteer
     @id = DB.exec("INSERT INTO volunteers (name,project_id) VALUES ('#{@name}','#{@project_id}') RETURNING id;").first().fetch("id").to_i()
   end
 
+  def self.find_by_name(name)
+    Volunteer.all().each do |vol|
+      if vol.name().==(name)
+        return vol
+      end
+    end
+    return nil
+  end
+
+  def update(attributes)
+    @name= attributes.fetch(:name)
+    @id= self.id()
+    DB.exec("UPDATE volunteers SET (name) = ('#{@name}') WHERE id = #{@id};")
+  end
+
 end

@@ -1,5 +1,4 @@
-
-<h1>Volunteer Tracker</h1>
+<img src="img/banner.png">
 
 <h3>Current Projects:</h3>
 <% if @projects.any?() %>
@@ -17,7 +16,23 @@
   <p> there are no projects at this time.</p>
   <% end %>
 
-<h3>Add another project</h3>
+  <h3>Volunteer roster:</h3>
+  <% if @volunteers.any?() %>
+    <ol>
+      <% @volunteers.each() do |volunteer| %>
+      <li>
+        <ul>
+          <li> <a href="/volunteer/<%=volunteer.id%>"><%=volunteer.name%></a></li>
+        </ul>
+      </li>
+      <% end %>
+    </ol>
+
+    <% else %>
+    <p> there are no volunteers at this time.</p>
+    <% end %>
+
+<h3>Create a new project</h3>
 
 <form action="/" method= "post">
   <div class="form-group">

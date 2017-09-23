@@ -19,6 +19,7 @@ post('/')do
   new_project = Project.new({:title => title,:id => nil})
   new_project.save
   @projects = Project.all()
+  @volunteers = Volunteer.all()
   erb(:index)
 end
 
@@ -28,12 +29,21 @@ get('/project/:id')do
   erb(:project)
 end
 
+post('/project/:id')do
+  name = params['name']
+  @project = Project.find(params.fetch("id").to_i)
+  @volunteer = Volunteer.new({:name => name,:project_id => @project.id,:id => nil})
+  @volunteer.save
+  @volunteers = @project.volunteers
+  erb(:project)
+end
+
 get('/edit_project/:id')do
   @project = Project.find(params.fetch("id").to_i)
   erb(:edit_project)
 end
 
-post('/edit_project/:id')do
+patch('/edit_project/:id')do
   title = params['title']
   proj = Project.find(params.fetch("id").to_i)
   proj.update({:title => title})
@@ -41,66 +51,25 @@ post('/edit_project/:id')do
   erb(:edit_project)
 end
 
-get('/edit_project/:id/delete')do
-  @project = Project.find(params.fetch("id").to_i)
-  erb(:delete)
-end
-
-delete('/edit_project/:id/delete')do
+delete('/edit_project/:id')do
   project = Project.find(params.fetch("id").to_i)
   project.delete
-  binding.pry
   @projects = Project.all()
-  erb(:delete)
+  erb(:index)
 end
 
-# get('/city_list') do
-#   @cities = City.all()
-#   erb(:city_list)
-# end
-#
-# get('/train_list') do
-#   @trains = Train.all()
-#   erb(:train_list)
-# end
-#
-# get('/city/:id') do
-#   @city = City.find(params.fetch("id").to_i)
-#   @cities = Stop.findAllCities(params.fetch("id").to_i)
-#   erb(:city)
-# end
-#
-# post('/city/:id')do
-#   train = params['train']
-#   time = params['time'] + ':00'
-#   @cities = Stop.findAllCities(params.fetch("id").to_i)
-#   @city = City.find(params.fetch("id").to_i)
-#   city = @city.name
-#   Train.populateTrain(train)
-#   stop = Stop.populateStop(city,train,time)
-#   @cities = Stop.findAllCities(params.fetch("id").to_i)
-#   erb(:city)
-# end
-#
-# get('/train/:id') do
-#   @train = Train.find(params.fetch("id").to_i)
-#   @trains = Stop.findAllTrains(params.fetch("id").to_i)
-#   erb(:train)
-# end
-#
-# post('/train/:id')do
-#   city = params['city']
-#   time = params['time'] + ':00'
-#   @trains = Stop.findAllTrains(params.fetch("id").to_i)
-#   @train = Train.find(params.fetch("id").to_i)
-#   train = @train.name
-#   City.populateCity(city)
-#   stop = Stop.populateStop(city,train,time)
-#   @trains = Stop.findAllTrains(params.fetch("id").to_i)
-#   erb(:train)
-# end
-#
-# get('/stops/:id')do
-#   @stop = Stop.find(params.fetch("id").to_i)
-#   erb(:stops)
-# end
+get('/volunteer/:id')do
+  @volunteer = Volunteer.find(params.fetch("id").to_i)
+  @project = Project.find(@volunteer.project_id)
+  erb(:volunteer)
+end
+
+patch('/volunteer/:id')do
+  vol_name = params['vol_name']
+  vol = Volunteer.find(params.fetch("id").to_i)
+  vol.update({:name => vol_name})
+  @volunteer = Volunteer.find(params.fetch("id").to_i)
+  @projects = Project.all()
+  @volunteers = Volunteer.all()
+  erb(:index)
+end

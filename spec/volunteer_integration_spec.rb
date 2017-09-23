@@ -41,9 +41,9 @@ describe 'the project delete path', {:type => :feature} do
     test_project = Project.new({:title => 'Teaching Kids to Code', :id => nil})
     test_project.save
     id = test_project.id
-    visit "/edit_project/#{id}/delete"
+    visit "/edit_project/#{id}"
     click_button('Delete Project')
-    vist '/'
+    visit '/'
     expect(page).not_to have_content("Teaching Kids to Code")
   end
 end
@@ -57,7 +57,7 @@ describe 'the volunteer detail page path', {:type => :feature} do
     project_id = test_project.id.to_i
     test_volunteer = Volunteer.new({:name => 'Jasmine', :project_id => project_id, :id => nil})
     test_volunteer.save
-    visit "/projects/#{project_id}"
+    visit "/project/#{project_id}"
     click_link('Jasmine')
     fill_in('name', :with => 'Jane')
     click_button('Update Volunteer')
